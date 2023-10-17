@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useContext, useEffect } from 'react'
+import { Routes , Route, useNavigate } from 'react-router-dom'
+import { AuthContext } from './context/auth-context'
+import Home from './routes/home'
+import Profile from './routes/profile'
 
 function App() {
+  const { currentUser } = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  // NOTE: console log for testing purposes
+  console.log('User:', !!currentUser);
+
+  // Check if the current user exists on the initial render.
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/profile')
+    }
+  }, [currentUser])
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Routes>
+      <Route index element={<Home />} />
+      <Route path="profile" element={currentUser ? <Profile />: <Home />} />
+    </Routes>
+  )
 }
 
-export default App;
+export default App

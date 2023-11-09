@@ -8,10 +8,8 @@ function App() {
   const { currentUser } = useContext(AuthContext)
   const navigate = useNavigate()
 
-  // NOTE: console log for testing purposes
   console.log('User:', !!currentUser);
 
-  // Check if the current user exists on the initial render.
   useEffect(() => {
     if (currentUser) {
       navigate('/profile')

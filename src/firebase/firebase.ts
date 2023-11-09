@@ -5,6 +5,7 @@ import {
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
   NextOrObserver,
   User
 } from 'firebase/auth';
@@ -31,5 +32,6 @@ export const signUpUser = async (email: string, password: string) => {
 export const userStateListener = (callback:NextOrObserver<User>) => {
   return onAuthStateChanged(auth, callback)
 }
+
 
 export const SignOutUser = async () => await signOut(auth);

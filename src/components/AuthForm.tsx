@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { signInUser, signUpUser } from "../firebase/firebase";
+import { signInUser, signUpUser } from "../firebase/firebaseAuth";
 import { useNavigate } from "react-router-dom";
 import "./AuthForm.css";
 
@@ -66,13 +66,13 @@ const AuthForm = () => {
         const userCredential = await signInUser(email, password);
         if (userCredential) {
           resetForm();
-          navigate("/profile");
+          navigate("/explore");
         }
       } else {
         const userData = await signUpUser(email, password);
         if (userData) {
           resetForm();
-          navigate("/profile");
+          navigate("/explore");
         }
       }
     } catch (error: any) {

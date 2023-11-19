@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react'
 import { Routes , Route, useNavigate } from 'react-router-dom'
 import { AuthContext } from './context/auth-context'
-import Home from './routes/home'
-import Profile from './routes/profile'
+import Home from './routes/Home'
+import Explore from './routes/Explore'
 
 function App() {
   const { currentUser } = useContext(AuthContext)
@@ -12,14 +12,19 @@ function App() {
 
   useEffect(() => {
     if (currentUser) {
-      navigate('/profile')
+      navigate('/explore')
     }
   }, [currentUser])
   
   return (
     <Routes>
       <Route index element={<Home />} />
-      <Route path="profile" element={currentUser ? <Profile />: <Home />} />
+      <Route path="explore" element={currentUser ? <Explore />: <Home />} />     
+      <Route path="/home"  element={ currentUser ? <Explore/> : <Home />} />
+      <Route path="/saved"  element={ currentUser ? <Explore/> : <Home />} />
+      <Route path="/planner"  element={ currentUser ? <Explore/> : <Home />} />
+      <Route path="/lists"  element={ currentUser ? <Explore/> : <Home />} />
+
     </Routes>
   )
 }

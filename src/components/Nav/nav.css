@@ -1,0 +1,23 @@
+.item {
+    padding: 20px 0 20px 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+
+}
+.item span{
+    font-size: 28px;
+}
+.item span:last-child {
+    margin-left: 15px;
+    font-size: 16px;
+}
+.item:hover {
+    color: #104730;
+    background:#d8f3dd; ;
+    border-radius: 5px;
+}

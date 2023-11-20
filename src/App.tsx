@@ -1,8 +1,9 @@
 import { useContext, useEffect } from 'react'
 import { Routes , Route, useNavigate } from 'react-router-dom'
 import { AuthContext } from './context/auth-context'
-import Home from './routes/Home'
+import StartPage from './routes/StartPage'
 import Explore from './routes/Explore'
+import AddRecipeForm from './routes/AddRecipeForm/AddRecipeForm'
 
 function App() {
   const { currentUser } = useContext(AuthContext)
@@ -18,12 +19,13 @@ function App() {
   
   return (
     <Routes>
-      <Route index element={<Home />} />
-      <Route path="explore" element={currentUser ? <Explore />: <Home />} />     
-      <Route path="/home"  element={ currentUser ? <Explore/> : <Home />} />
-      <Route path="/saved"  element={ currentUser ? <Explore/> : <Home />} />
-      <Route path="/planner"  element={ currentUser ? <Explore/> : <Home />} />
-      <Route path="/lists"  element={ currentUser ? <Explore/> : <Home />} />
+      <Route index element={<StartPage />} />
+      <Route path="explore" element={currentUser ? <Explore />: <StartPage />} />     
+      <Route path="/start"  element={ currentUser ? <Explore/> : <StartPage />} />
+      <Route path="/saved"  element={ currentUser ? <Explore/> : <StartPage />} />
+      <Route path="/planner"  element={ currentUser ? <Explore/> : <StartPage />} />
+      <Route path="/lists"  element={ currentUser ? <Explore/> : <StartPage />} />
+      <Route path="/add-recipe" element={currentUser ? <AddRecipeForm/> : <StartPage/> }/>
 
     </Routes>
   )

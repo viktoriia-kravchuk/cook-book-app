@@ -1,5 +1,6 @@
 import { useState, useContext, ChangeEvent } from "react";
 import { AuthContext } from "../../context/auth-context";
+import withLayout from "../../components/Layout/withLayout";
 import { addNewRecipe } from "../../firebase/firebaseRecipes";
 import "./addRecipeForm.css"
 
@@ -10,6 +11,7 @@ const AddRecipeForm = () => {
   const [instructions, setInstructions] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
 
   const setFormData = (field: string, value: string) => {
@@ -59,6 +61,10 @@ const AddRecipeForm = () => {
   };
 
   const handleRecipeSubmission = async () => {
+    if (!title || !description || !instructions || !category) {
+      setError("All fields must be filled out.");
+      return;
+    }
     if (currentUser) {
       const recipe = {
         title,
@@ -80,7 +86,9 @@ const AddRecipeForm = () => {
 
   return (
     <div className="form-recipe-container">
+    
       <form className="form-recipe">
+      <div className="title">Share your recipe!</div>
         {["title", "description", "instructions", "category"].map((field) => (
         <div className="field-container">
           <label key={field}>
@@ -130,9 +138,10 @@ const AddRecipeForm = () => {
           Add Recipe
         </button>
       </form>
-      <div>{status}</div>
+      <div className="status">{status}</div>
+      <div className="error">{error}</div>
     </div>
   );
 };
 
-export default AddRecipeForm;
+export default withLayout(AddRecipeForm);

@@ -1,5 +1,6 @@
 .side-panel {
     grid-area: sidebar;
+    width: 100%;
     width: 306px;
     height: 727px;
     background: #fff;
@@ -7,28 +8,48 @@
     border-radius: 15px;
     position: relative;
 }
+
 .side-panel .item-container {
-    height: 360px;
-    width: 266px;
+    height: auto;
+    width: 100%;
+    max-width: 266px;
     position: absolute;
     top: 157px;
     left: 20px;
     right: 20px;
 }
+
 .side-panel .profile {
-    position: absolute;
+    position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    height: 60px;
-    width: 266px;
-    padding: 20px 0 0px 22px;
+    height: auto;
+    width: 100%;
+    padding: 20px 0 10px 0;
     top: 30px;
     cursor: pointer;
 }
+
 .side-panel .profile img {
     border-radius: 50%;
-    margin-right: 10px;
+    margin-bottom: 10px;
 }
+
 .side-panel .profile span {
     font-size: 16px;
+}
+
+@media only screen and (max-width: 600px) {
+    .side-panel {
+        max-width: 170px
+    }
+
+    .side-panel .item-container {
+        max-width: 100%;
+    }
+
+    .side-panel .profile {
+        padding: 10px 0 5px 0;
+    }
 }

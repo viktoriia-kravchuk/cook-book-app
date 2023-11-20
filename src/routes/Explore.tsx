@@ -1,24 +1,43 @@
-import { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/auth-context";
+import { getRecipes } from "../firebase/firebaseRecipes";
+import { useNavigate } from "react-router-dom";
+import withLayout from "../components/Layout/withLayout";
 import "./explore.css";
-import Sidebar from "../components/Sidebar";
-import AddRecipeForm from "../components/AddRecipeForm/AddRecipeForm";
+import { Recipe } from "../types";
+import RecipesList from "../components/RecipesList/RecipesList";
 
-function Explore() {
-  const [showAddingRecipe, setShowAddingRecipe] = useState(false);
+const Explore: React.FC = () => {
+  const navigate = useNavigate();
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const recipesData = await getRecipes();
+        setRecipes(recipesData);
+        console.log(recipesData);
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, []); 
 
   const handleShowAddingRecipe = () => {
-    setShowAddingRecipe(true);
+    navigate("/add-recipe");
   };
 
   return (
-    <div className="layout">
-      <Sidebar />
-      <div className="main">
-        <button onClick={handleShowAddingRecipe}>Add Recipe</button>
-
-        {showAddingRecipe && <AddRecipeForm />}
-      </div>
+    <div>
+      <button className="classic-button" onClick={handleShowAddingRecipe}>Add Recipe</button>
+      <div>
+          <h2>Recipes</h2>
+          <RecipesList recipes={recipes} />
+        </div>
     </div>
   );
-}
-export default Explore;
+};
+
+export default withLayout(Explore);

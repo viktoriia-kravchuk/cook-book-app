@@ -2,7 +2,7 @@ import AuthForm from "../components/AuthForm";
 import ".././App.css";
 import "./home.css";
 
-function Home() {
+function StartPage() {
   return (
     <div className="App">
       <AuthForm />
@@ -10,4 +10,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default StartPage;

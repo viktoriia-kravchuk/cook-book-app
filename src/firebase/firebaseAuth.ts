@@ -8,8 +8,15 @@ import {
   NextOrObserver,
   User,
 } from "firebase/auth";
+
 import { getFirebaseConfig } from "./firebase-config";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+} from "firebase/firestore";
 
 const app = initializeApp(getFirebaseConfig());
 const auth = getAuth(app);
@@ -51,6 +58,19 @@ export const signUpUser = async (email: string, password: string) => {
 
 export const userStateListener = (callback: NextOrObserver<User>) => {
   return onAuthStateChanged(auth, callback);
+};
+
+export const getUserDataById = async (userId: string) => {
+  try {
+    const firestore = getFirestore();
+    const usersCollection = collection(firestore, "users");
+    const userDoc = await getDoc(doc(usersCollection, userId));
+
+    return userDoc.exists() ? userDoc.data() : null;
+  } catch (error) {
+    console.error("Error getting user data:", error);
+    throw error;
+  }
 };
 
 export const SignOutUser = async () => await signOut(auth);

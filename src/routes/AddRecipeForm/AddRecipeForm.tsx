@@ -71,8 +71,7 @@ const AddRecipeForm = () => {
         description,
         instructions,
         category,
-        user_id: currentUser.uid,
-        created_at: new Date()
+        user_id: currentUser.uid
       };
 
       const newRecipe = await addNewRecipe(recipe);

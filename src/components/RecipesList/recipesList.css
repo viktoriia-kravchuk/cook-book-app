@@ -2,7 +2,7 @@
      display: grid;
      max-width: 900px;
      margin: 20px auto;
-     grid-template-columns: repeat(3, 1fr);
+     grid-template-columns: repeat(3, 30%);
      gap: 20px;
      column-gap: 2em;
      grid-auto-rows: minmax(250px, auto);
@@ -39,3 +39,8 @@
  .recipe-card:hover {
      transform: scale(1.05);
  }
+
+ .recipe-card .user-email {
+    font-size: 0.8em;
+    margin-right: 4px;
+  }

@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirebaseConfig } from "./firebase-config";
-import { getFirestore, collection, getDocs, query, where, addDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, where, addDoc, serverTimestamp } from "firebase/firestore";
 import { Recipe } from "../types";
 const app = initializeApp(getFirebaseConfig());
 const auth = getAuth(app);
@@ -10,11 +10,13 @@ export const addNewRecipe = async (recipe: Recipe) => {
   try {
     const firestore = getFirestore();
     const recipesCollection = collection(firestore, "recipes");
-    const docRef = await addDoc(recipesCollection, recipe);
+    const newRecipe = {
+      ...recipe,
+      created_at: serverTimestamp(),
+    };
 
-    // const docRef = await addDoc(collection(db, "todos"), {
-    //   todo: todo,    
-    // });
+    const docRef = await addDoc(recipesCollection, newRecipe);
+
     console.log("Document written with ID: ", docRef.id);
     console.log("Recipe added successfully!");
     return recipe;

@@ -9,3 +9,5 @@ export type Recipe = {
   user_id: string;
   created_at?: Timestamp;
 };
+
+export type RecipeCategory = "breakfast" | "lunch" | "dinner" | "snack" | "dessert" | "drink";

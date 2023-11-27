@@ -4,6 +4,8 @@ import { AuthContext } from './context/auth-context'
 import StartPage from './routes/StartPage'
 import Explore from './routes/Explore'
 import AddRecipeForm from './routes/AddRecipeForm/AddRecipeForm'
+import UserLists from './routes/UserLists'
+import RecipePage from './routes/Recipes/RecipePage'
 
 function App() {
   const { currentUser } = useContext(AuthContext)
@@ -24,8 +26,9 @@ function App() {
       <Route path="/start"  element={ currentUser ? <Explore/> : <StartPage />} />
       <Route path="/saved"  element={ currentUser ? <Explore/> : <StartPage />} />
       <Route path="/planner"  element={ currentUser ? <Explore/> : <StartPage />} />
-      <Route path="/lists"  element={ currentUser ? <Explore/> : <StartPage />} />
+      <Route path="/lists"  element={ currentUser ? <UserLists/> : <StartPage />} />
       <Route path="/add-recipe" element={currentUser ? <AddRecipeForm/> : <StartPage/> }/>
+      <Route path="/recipes/:id" element={<RecipePage/>} />
 
     </Routes>
   )

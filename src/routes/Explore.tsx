@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/auth-context";
-import { getRecipes } from "../firebase/firebaseRecipes";
-import { useNavigate } from "react-router-dom";
+import { getAllRecipes } from "../firebase/firebaseRecipes";
 import withLayout from "../components/Layout/withLayout";
 import "./explore.css";
 import { Recipe, RecipeCategory } from "../types";
@@ -11,17 +10,18 @@ import SearchBar from "../components/SearchBar";
 import FilterBar from "../components/FilterBar";
 
 const Explore: React.FC = () => {
-  const navigate = useNavigate();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>(recipes);
-  const [selectedCategory, setSelectedCategory] = useState<RecipeCategory | "all">("all");
+  const [selectedCategory, setSelectedCategory] = useState<
+    RecipeCategory | "all"
+  >("all");
   const [lastSearchQuery, setLastSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const recipesData = await getRecipes();
+        const recipesData = await getAllRecipes();
         setRecipes(recipesData);
         setFilteredRecipes(recipesData);
         setLoading(false);
@@ -34,10 +34,6 @@ const Explore: React.FC = () => {
 
     fetchRecipes();
   }, []);
-
-  const handleShowAddingRecipe = () => {
-    navigate("/add-recipe");
-  };
 
   const handleSearchAndFilter = (
     query: string,
@@ -70,16 +66,7 @@ const Explore: React.FC = () => {
         onFilter={handleCategoryFilter}
         label="Category"
       />
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          <RecipesList recipes={filteredRecipes} />
-        </div>
-      )}
-      <button className="classic-button" onClick={handleShowAddingRecipe}>
-        Add Recipe
-      </button>
+      {loading ? <p>Loading...</p> : <RecipesList recipes={filteredRecipes} />}
     </div>
   );
 };

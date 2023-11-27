@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from "react";
+import "./index.css";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -14,7 +15,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <div>
+    <div className="search-bar">
       <input
         type="text"
         placeholder="Find recipes..."

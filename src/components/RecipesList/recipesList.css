@@ -1,11 +1,12 @@
  .cards-container {
      display: grid;
      max-width: 900px;
-     margin: 20px auto;
+     margin: 0 auto;
      grid-template-columns: repeat(3, 30%);
      gap: 20px;
      column-gap: 2em;
      grid-auto-rows: minmax(250px, auto);
+     justify-content: space-between;
  }
 
  .recipe-card {
@@ -30,7 +31,7 @@
      margin-bottom: 10px;
  }
 
-.recipe-title{
+ .recipe-card .recipe-title{
     font-size: 1em;
     font-weight: 600;
     text-transform: uppercase;

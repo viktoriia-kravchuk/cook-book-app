@@ -1,0 +1,36 @@
+.recipe-container {
+    max-width: 600px;
+    margin: 2% auto;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  
+  .recipe-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .recipe-title {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .recipe-category {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 8px;
+  }
+  
+  .recipe-description {
+    font-size: 1em;
+    margin-bottom: 16px;
+  }
+  
+  .recipe-instructions {
+    font-size: 1em;
+  }

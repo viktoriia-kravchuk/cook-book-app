@@ -14,16 +14,12 @@ interface Data {
 const Nav: React.FC<Data> = (props) => {
   const { icon: Icon, name, onClick, link } = props;
   return (
-    <div className="item" onClick={onClick}>
-      {Icon && <Icon className="icon" />}
-      {link ? (
-        <span>
-          <Link to={link}>{name}</Link>
-        </span>
-      ) : (
+    <Link to={link || "#"}>
+      <div className="item" onClick={onClick}>
+        {Icon && <Icon className="icon" />}
         <span>{name}</span>
-      )}
-    </div>
+      </div>
+    </Link>
   );
 };
 

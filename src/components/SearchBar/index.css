@@ -1,0 +1,18 @@
+.search-bar {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+  
+  /* Media query for small screens */
+  @media screen and (max-width: 600px) {
+    .search-bar {
+      width: 100%;
+    }
+  }
+  
+  .search-bar input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+  }

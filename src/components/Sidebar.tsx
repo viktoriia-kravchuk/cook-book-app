@@ -5,9 +5,10 @@ import { ImBooks } from "react-icons/im";
 import { RxExit } from "react-icons/rx";
 import { GrPlan } from "react-icons/gr";
 import { FaList } from "react-icons/fa";
-
-import { useContext } from "react";
+import { DocumentData } from 'firebase/firestore';
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/auth-context";
+import { getUserDataById } from "../firebase/firebaseAuth";
 
 let data = [
   { id: 0, name: "Home", icon: FaHome, link: "/home" },
@@ -18,17 +19,41 @@ let data = [
 
 const Sidebar = () => {
   const { currentUser, signOut } = useContext(AuthContext);
+  console.log(currentUser);
+  const [userData, setUserData] =useState<DocumentData | null>(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (currentUser) {
+        try {
+          const userId = currentUser.uid;
+          const userData = await getUserDataById(userId);
+          setUserData(userData);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [currentUser]);
+
+  
   <button onClick={signOut}>Sign Out</button>;
   return (
     <div className="side-panel">
       <div className="profile">
-        <img
-          src="https://source.unsplash.com/QXevDflbl8A/60x60"
-          alt="profile_photo"
-          width="60"
-          height="60"
-        />
-        <span>{currentUser?.email}</span>
+      {userData && (
+          <>
+            <img
+              src={userData.photoUrl || "https://source.unsplash.com/QXevDflbl8A/60x60"}
+              alt="profile_photo"
+              width="60"
+              height="60"
+            />
+            <span>{userData.nickname || currentUser?.email}</span>
+          </>
+        )}
       </div>
       <div className="item-container">
         {data.map((item) => (

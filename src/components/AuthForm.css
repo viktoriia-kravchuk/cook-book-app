@@ -35,7 +35,6 @@
      width: 100%;
      padding: 0 15px;
      font-size: 17px;
-     margin-bottom: 1.3rem;
      border: 1px solid #ddd;
      border-radius: 6px;
      outline: none;
@@ -43,6 +42,7 @@
    .form input:focus{
      box-shadow: 0 1px 0 rgba(0,0,0,0.2);
    }
+
   .form a{
     font-size: 16px;
     color: #009579;
@@ -57,7 +57,6 @@
     font-size: 1.2rem;
     font-weight: 500;
     letter-spacing: 1px;
-    margin-top: 1.7rem;
     cursor: pointer;
     transition: 0.4s;
   }
@@ -83,3 +82,27 @@
     text-decoration: underline;
   }
   
+
+  .form input[name="name"],
+.form input[name="surname"] {
+  width: calc(50% - 7.5px);
+  display: inline-block;
+  margin-right: 15px;
+  box-sizing: border-box; /* Add this property */
+}
+
+.form input[name="surname"] {
+  margin-right: 0; /* Adjust the margin for the last input */
+}
+
+.form input[name="nickname"] {
+  width: 100%;
+  box-sizing: border-box; /* Add this property */
+}
+
+.form input[name="photo"] {
+  width: calc(50% - 7.5px);
+  display: inline-block;
+  margin-top: 1.3rem;
+  box-sizing: border-box;
+}

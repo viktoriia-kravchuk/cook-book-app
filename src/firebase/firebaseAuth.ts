@@ -18,6 +18,8 @@ import {
   collection,
 } from "firebase/firestore";
 
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 const app = initializeApp(getFirebaseConfig());
 const auth = getAuth(app);
 
@@ -27,11 +29,19 @@ export const signInUser = async (email: string, password: string) => {
   return await signInWithEmailAndPassword(auth, email, password);
 };
 
-export const signUpUser = async (email: string, password: string) => {
+export const signUpUser = async (
+  email: string,
+  password: string,
+  name: string,
+  surname: string,
+  nickname: string,
+  photo: File
+) => {
   try {
-    if (!email || !password) {
-      throw new Error("Email and password are required.");
+    if (!email || !password || !name || !surname || !nickname || !photo) {
+      throw new Error("All fields are required.");
     }
+
     const auth = getAuth();
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -40,14 +50,28 @@ export const signUpUser = async (email: string, password: string) => {
     );
     const user = userCredential.user;
 
+    const storage = getStorage();
+    const storageRef = ref(storage, `user-profile-photos/${user.uid}`);
+    await uploadBytes(storageRef, photo);
+
+    const photoUrl = await getDownloadURL(storageRef);
+
     const firestore = getFirestore();
     const userRef = doc(firestore, "users", user.uid);
 
-    const userData = {
-      email: user.email,
-    };
+    if (photoUrl) {
+      const userData = {
+        email: user.email,
+        name,
+        surname,
+        nickname,
+        photoUrl,
+      };
 
-    await setDoc(userRef, userData);
+      await setDoc(userRef, userData);
+    } else {
+      throw new Error("Failed to retrieve photo URL");
+    }
 
     return user;
   } catch (error) {

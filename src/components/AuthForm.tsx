@@ -7,6 +7,10 @@ type FormFields = {
   email: string;
   password: string;
   confirmPassword: string;
+  name: string;
+  surname: string;
+  nickname: string;
+  photo: File | null;
 };
 
 const AuthForm = () => {
@@ -14,13 +18,26 @@ const AuthForm = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    name: "",
+    surname: "",
+    nickname: "",
+    photo: null,
   });
+
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
   const resetForm = () => {
-    setFormFields({ email: "", password: "", confirmPassword: "" });
+    setFormFields({
+      email: "",
+      password: "",
+      confirmPassword: "",
+      name: "",
+      surname: "",
+      nickname: "",
+      photo: null,
+    });
     setError("");
   };
 
@@ -32,22 +49,52 @@ const AuthForm = () => {
   const validateFields = (
     email: string,
     password: string,
-    confirmPassword: string
+    confirmPassword: string,
+    name: string,
+    surname: string,
+    nickname: string,
+    photo: File | null,
+    isLogin: boolean
   ): boolean => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  
+    // Validate email
     if (!emailRegex.test(email)) {
       setError("Invalid email address");
       return false;
     }
+  
+    // Validate password
     if (password.length < 6) {
       setError("Password must be at least 6 characters");
       return false;
     }
+  
+    // Validate password match for signup
     if (!isLogin && password !== confirmPassword) {
       setError("Passwords do not match");
       return false;
     }
+  
+    // Validate name, surname, nickname for signup
+    if (!isLogin && (!name.trim() || !surname.trim() || !nickname.trim())) {
+      setError("Name, surname, and nickname are required");
+      return false;
+    }
+  
+    // Validate photo for signup
+    if (!isLogin && !photo) {
+      setError("Profile photo is required");
+      return false;
+    }
+  
     return true;
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    setFormFields({ ...formFields, photo: file });
+    setError("");
   };
 
   const handleSubmit = async (
@@ -55,9 +102,9 @@ const AuthForm = () => {
     isLogin: boolean
   ) => {
     event.preventDefault();
-    const { email, password, confirmPassword } = formFields;
+    const { email, password, confirmPassword, name, surname, nickname, photo } = formFields;
 
-    if (!validateFields(email, password, confirmPassword)) {
+    if (!validateFields(email, password, confirmPassword, name, surname, nickname, photo, isLogin)) {
       return;
     }
 
@@ -69,10 +116,15 @@ const AuthForm = () => {
           navigate("/explore");
         }
       } else {
-        const userData = await signUpUser(email, password);
-        if (userData) {
-          resetForm();
-          navigate("/explore");
+
+        if (photo !== null) {
+          const userData = await signUpUser(email, password, name, surname, nickname, photo);
+          if (userData) {
+            resetForm();
+            navigate("/explore");
+          }
+        } else {
+          setError("Profile photo is required");
         }
       }
     } catch (error: any) {
@@ -122,6 +174,36 @@ const AuthForm = () => {
                 name="confirmPassword"
                 value={formFields.confirmPassword}
                 onChange={handleChange}
+                required
+              />
+              <input
+                type="text"
+                placeholder="Enter your name"
+                value={formFields.name}
+                onChange={handleChange}
+                name="name"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Enter your surname"
+                value={formFields.surname}
+                onChange={handleChange}
+                name="surname"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Enter your nickname"
+                value={formFields.nickname}
+                onChange={handleChange}
+                name="nickname"
+                required
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
                 required
               />
             </>

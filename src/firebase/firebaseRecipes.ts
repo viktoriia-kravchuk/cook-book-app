@@ -3,16 +3,29 @@ import { getAuth } from "firebase/auth";
 import { getFirebaseConfig } from "./firebase-config";
 import { getFirestore, collection, getDocs, query, where, addDoc, serverTimestamp,doc, getDoc } from "firebase/firestore";
 import { Recipe } from "../types";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 const app = initializeApp(getFirebaseConfig());
 const auth = getAuth(app);
 
-export const addNewRecipe = async (recipe: Recipe) => {
+export const addNewRecipe = async (recipe: Recipe, image: File | null) => {
   try {
     const firestore = getFirestore();
+    const storage = getStorage();
+
+    // Upload image to Firebase Storage if an image is provided
+    let imageUrl = "";
+    if (image) {
+      const storageRef = ref(storage, `recipes-photos/${recipe.title}-${recipe.user_id}-${Date.now()}`);
+      await uploadBytes(storageRef, image);
+      imageUrl = await getDownloadURL(storageRef);
+    }
+
     const recipesCollection = collection(firestore, "recipes");
     const newRecipe = {
       ...recipe,
       created_at: serverTimestamp(),
+      imageUrl: imageUrl,
     };
 
     const docRef = await addDoc(recipesCollection, newRecipe);

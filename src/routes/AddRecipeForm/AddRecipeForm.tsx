@@ -1,4 +1,4 @@
-import { useState, useContext, ChangeEvent } from "react";
+import { useState, useContext, ChangeEvent, useRef } from "react";
 import { AuthContext } from "../../context/auth-context";
 import withLayout from "../../components/Layout/withLayout";
 import { addNewRecipe } from "../../firebase/firebaseRecipes";
@@ -12,7 +12,15 @@ const AddRecipeForm = () => {
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setImage(selectedFile);
+    }
+  };
 
   const setFormData = (field: string, value: string) => {
     switch (field) {
@@ -74,7 +82,7 @@ const AddRecipeForm = () => {
         user_id: currentUser.uid
       };
 
-      const newRecipe = await addNewRecipe(recipe);
+      const newRecipe = await addNewRecipe(recipe,image);
 
       if (newRecipe) {
         setFormData("reset", "");
@@ -123,16 +131,16 @@ const AddRecipeForm = () => {
           </label>
           </div>
         ))}
-        {/* Add input for file upload
-        <label>
-          Image:
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-          />
-        </label> */}
+
+<label>
+            Image:
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+            />
+          </label>
         <button type="button" onClick={handleRecipeSubmission}>
           Add Recipe
         </button>

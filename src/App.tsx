@@ -6,6 +6,7 @@ import Explore from './routes/Explore'
 import AddRecipeForm from './routes/AddRecipeForm/AddRecipeForm'
 import UserLists from './routes/UserLists'
 import RecipePage from './routes/Recipes/RecipePage'
+import ListPage from './routes/ListPage'
 
 function App() {
   const { currentUser } = useContext(AuthContext)
@@ -24,7 +25,8 @@ function App() {
       <Route index element={<StartPage />} />
       <Route path="explore" element={currentUser ? <Explore />: <StartPage />} />     
       <Route path="/start"  element={ currentUser ? <Explore/> : <StartPage />} />
-      <Route path="/saved"  element={ currentUser ? <Explore/> : <StartPage />} />
+      <Route path="/saved"  element={ currentUser ? <ListPage interaction="save" pageTitle="Saved recipes"/> : <StartPage />} />
+      <Route path="/liked"  element={ currentUser ? <ListPage interaction="like" pageTitle="Liked recipes"/> : <StartPage />} />
       <Route path="/planner"  element={ currentUser ? <Explore/> : <StartPage />} />
       <Route path="/lists"  element={ currentUser ? <UserLists/> : <StartPage />} />
       <Route path="/add-recipe" element={currentUser ? <AddRecipeForm/> : <StartPage/> }/>

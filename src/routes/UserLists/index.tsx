@@ -42,7 +42,6 @@ const UserLists = () => {
           Add Recipe +
         </button>
       </div>
-      {/* <h3>Liked recipes</h3> */}
     </div>
   );
 };

@@ -5,16 +5,19 @@ import { ImBooks } from "react-icons/im";
 import { RxExit } from "react-icons/rx";
 import { GrPlan } from "react-icons/gr";
 import { FaList } from "react-icons/fa";
+import { TbFileLike } from "react-icons/tb";
 import { DocumentData } from 'firebase/firestore';
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/auth-context";
 import { getUserDataById } from "../firebase/firebaseAuth";
 
 let data = [
-  { id: 0, name: "Home", icon: FaHome, link: "/home" },
-  { id: 1, name: "Saved", icon: ImBooks, link: "/saved" },
-  { id: 2, name: "Planner", icon: GrPlan, link: "/planner" },
-  { id: 3, name: "Lists", icon: FaList, link: "/lists" },
+  { id: 0, name: "Home", icon: FaHome, link: "/explore" },
+  { id: 1, name: "My recipes", icon: FaList, link: "/lists" },
+  { id: 2, name: "Saved", icon: ImBooks, link: "/saved" },
+  { id: 3, name: "Liked", icon: TbFileLike, link: "/liked" },
+  { id: 4, name: "Planner", icon: GrPlan, link: "/planner" },
+  
 ];
 
 const Sidebar = () => {

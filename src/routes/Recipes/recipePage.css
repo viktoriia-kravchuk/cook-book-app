@@ -64,3 +64,17 @@
 .recipe-actions span:hover {
   cursor: pointer;
 }
+
+.recipe-actions-center {
+  display: flex;
+  justify-content:flex-start;
+  padding: 1em;
+  align-items: center;
+}
+
+.action-icon{
+  cursor: pointer;
+  margin-right: 1em;
+  transform: scale(2); 
+
+}

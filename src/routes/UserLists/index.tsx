@@ -18,7 +18,6 @@ const UserLists = () => {
           const recipes = await getRecipesByUserId(currentUser.uid);
           if (recipes) {
             setUserRecipes(recipes);
-            // console.log("user recipes", recipes);
           }
         }
       } catch (error) {

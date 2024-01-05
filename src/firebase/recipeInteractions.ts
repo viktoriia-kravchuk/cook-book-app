@@ -176,3 +176,43 @@ export const getSavedOrLikedRecipesByUser = async (
 ): Promise<Recipe[]> => {
   return getRecipesByUserAction(userId, action);
 };
+
+
+
+export const deleteRecipe = async (userId: string, recipeId: string) => {
+  const firestore = getFirestore();
+  const recipeDoc = doc(firestore, COLLECTIONS.recipes, recipeId);
+
+  try {
+    await runTransaction(firestore, async (transaction) => {
+      const recipeSnapshot = await transaction.get(recipeDoc);
+
+      if (!recipeSnapshot.exists()) {
+        throw new Error(`Recipe with ID ${recipeId} does not exist.`);
+      }
+
+      transaction.delete(recipeDoc);
+
+      const likesQuery = query(
+        collection(firestore, COLLECTIONS.likes),
+        where("recipeId", "==", recipeId)
+      );
+      const likesSnapshot = await getDocs(likesQuery);
+      likesSnapshot.forEach((likeDoc) => {
+        transaction.delete(likeDoc.ref);
+      });
+
+      const savesQuery = query(
+        collection(firestore, COLLECTIONS.saves),
+        where("recipeId", "==", recipeId)
+      );
+      const savesSnapshot = await getDocs(savesQuery);
+      savesSnapshot.forEach((saveDoc) => {
+        transaction.delete(saveDoc.ref);
+      });
+    });
+  } catch (error) {
+    console.error("Error deleting recipe and interactions:", error);
+    throw error;
+  }
+};

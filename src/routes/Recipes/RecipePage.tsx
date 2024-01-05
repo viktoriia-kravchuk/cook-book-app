@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth-context";
 import { useParams } from "react-router-dom";
 import { getRecipeById } from "../../firebase/firebaseRecipes";
@@ -6,7 +7,13 @@ import { Recipe } from "../../types";
 import withLayout from "../../components/Layout/withLayout";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
-import { MdBookmarkAdded, MdBookmarkAdd } from "react-icons/md";
+import {
+  MdBookmarkAdded,
+  MdBookmarkAdd,
+  MdDeleteOutline,
+  MdMode,
+} from "react-icons/md";
+
 import {
   likeRecipe,
   unlikeRecipe,
@@ -15,6 +22,7 @@ import {
   updateRecipeLikes,
   updateRecipeSaves,
   checkUserInteraction,
+  deleteRecipe,
 } from "../../firebase/recipeInteractions";
 
 import "./recipePage.css";
@@ -28,6 +36,7 @@ const RecipePage: React.FC<RecipePageProps> = () => {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -88,6 +97,17 @@ const RecipePage: React.FC<RecipePageProps> = () => {
     return <div>Loading...</div>;
   }
 
+  const handleDelete = async () => {
+    try {
+      if (recipe?.id && userId && recipe?.user_id === userId) {
+        await deleteRecipe(userId!, recipe.id!);
+        navigate("/lists");
+      }
+    } catch (error) {
+      console.error("Error deleting recipe:", error);
+    }
+  };
+
   return (
     <div className="recipe-container">
       <div className="recipe-img-container">
@@ -125,6 +145,14 @@ const RecipePage: React.FC<RecipePageProps> = () => {
       <div className="recipe-instructions">
         <h3>Instructions:</h3>
         <p>{recipe.instructions}</p>
+      </div>
+      <div className="recipe-actions-center">
+        {userId === recipe.user_id && (
+          <>
+            <MdMode className="action-icon" />
+            <MdDeleteOutline onClick={handleDelete} className="action-icon" />
+          </>
+        )}
       </div>
     </div>
   );

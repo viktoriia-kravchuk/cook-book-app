@@ -10,6 +10,8 @@ import {
   deleteDoc,
   query,
 } from "firebase/firestore";
+import { deleteObject, ref as storageRef, getStorage } from "firebase/storage";
+
 import { Recipe } from "../types";
 
 const COLLECTIONS = {
@@ -177,8 +179,6 @@ export const getSavedOrLikedRecipesByUser = async (
   return getRecipesByUserAction(userId, action);
 };
 
-
-
 export const deleteRecipe = async (userId: string, recipeId: string) => {
   const firestore = getFirestore();
   const recipeDoc = doc(firestore, COLLECTIONS.recipes, recipeId);
@@ -189,6 +189,12 @@ export const deleteRecipe = async (userId: string, recipeId: string) => {
 
       if (!recipeSnapshot.exists()) {
         throw new Error(`Recipe with ID ${recipeId} does not exist.`);
+      }
+
+      const imageUrl = recipeSnapshot.get("imageUrl");
+      if (imageUrl) {
+        const imageRef = storageRef(getStorage(), imageUrl);
+        await deleteObject(imageRef);
       }
 
       transaction.delete(recipeDoc);

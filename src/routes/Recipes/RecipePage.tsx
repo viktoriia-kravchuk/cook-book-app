@@ -108,6 +108,10 @@ const RecipePage: React.FC<RecipePageProps> = () => {
     }
   };
 
+  const handleEdit = () =>{
+    navigate(`/edit-recipe/${recipe.id}`)
+  }
+
   return (
     <div className="recipe-container">
       <div className="recipe-img-container">
@@ -149,7 +153,7 @@ const RecipePage: React.FC<RecipePageProps> = () => {
       <div className="recipe-actions-center">
         {userId === recipe.user_id && (
           <>
-            <MdMode className="action-icon" />
+            <MdMode className="action-icon" onClick={handleEdit} />
             <MdDeleteOutline onClick={handleDelete} className="action-icon" />
           </>
         )}

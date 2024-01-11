@@ -8,6 +8,7 @@ import { RecipeCategories } from "../const";
 import RecipesList from "../components/RecipesList/RecipesList";
 import SearchBar from "../components/SearchBar";
 import FilterBar from "../components/FilterBar";
+import LoadingScreen from "../components/LoadingScreen";
 
 const Explore: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -19,20 +20,24 @@ const Explore: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
     const fetchRecipes = async () => {
       try {
+        
         const recipesData = await getAllRecipes();
         setRecipes(recipesData);
         setFilteredRecipes(recipesData);
-        setLoading(false);
         console.log(recipesData);
       } catch (error) {
-        setLoading(false);
+
         console.error("Error fetching recipes:", error);
       }
+      finally {
+        setLoading(false);
+      }
     };
-
     fetchRecipes();
+
   }, []);
 
   const handleSearchAndFilter = (
@@ -59,6 +64,8 @@ const Explore: React.FC = () => {
   };
 
   return (
+    <>
+    {loading && <LoadingScreen/>}
     <div>
       <SearchBar onSearch={handleSearch} />
       <FilterBar
@@ -66,8 +73,9 @@ const Explore: React.FC = () => {
         onFilter={handleCategoryFilter}
         label="Category"
       />
-      {loading ? <p>Loading...</p> : <RecipesList recipes={filteredRecipes} />}
+      <RecipesList recipes={filteredRecipes} />
     </div>
+    </>
   );
 };
 

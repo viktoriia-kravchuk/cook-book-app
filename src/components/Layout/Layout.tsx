@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import Sidebar from "../Sidebar";
+import LoadingScreen from "../LoadingScreen";
 import "./layout.css";
 
 interface LayoutProps {

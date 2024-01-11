@@ -12,3 +12,4 @@ const withLayout = <P extends object>(WrappedComponent: React.ComponentType<P>) 
 };
 
 export default withLayout;
+
